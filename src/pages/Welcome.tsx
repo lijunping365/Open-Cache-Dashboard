@@ -1,19 +1,24 @@
-import React from 'react';
-import { PageContainer } from '@ant-design/pro-layout';
-import {Card, Alert, Typography, Tag, Statistic, Row, Col} from 'antd';
-import styles from './Welcome.less';
 import {
-  AlertOutlined, ApiOutlined, ArrowUpOutlined, BarChartOutlined, BugOutlined,
-  CoffeeOutlined, DashboardOutlined, DeploymentUnitOutlined,
-} from "@ant-design/icons";
+  AlertOutlined,
+  ApiOutlined,
+  ArrowUpOutlined,
+  BarChartOutlined,
+  BugOutlined,
+  CoffeeOutlined,
+  DashboardOutlined,
+  DeploymentUnitOutlined,
+} from '@ant-design/icons';
+import { PageContainer } from '@ant-design/pro-layout';
+import { Alert, Card, Col, Row, Statistic, Tag, Typography } from 'antd';
+import React from 'react';
+import styles from './Welcome.less';
 
 export default (): React.ReactNode => {
-
   return (
     <PageContainer>
       <Card>
         <Alert
-          message='欢迎使用 Open-Job，一款简单易用且轻量级易拓展的分布式任务调度系统。'
+          message="欢迎使用 Open-Cache，一款简单易用且轻量级易拓展的分布式缓存系统。"
           type="success"
           showIcon
           banner
@@ -33,7 +38,7 @@ export default (): React.ReactNode => {
             分布式
           </Tag>
           <Tag icon={<CoffeeOutlined />} color="#55acee">
-            调度系统
+            缓存框架
           </Tag>
           <Tag icon={<DashboardOutlined />} color="#55acee">
             监控
@@ -46,14 +51,13 @@ export default (): React.ReactNode => {
           </Tag>
 
           <a
-            href="https://github.com/lijunping365/Open-Job"
+            href="https://github.com/lijunping365/Open-Cache"
             rel="noopener noreferrer"
             target="__blank"
           >
             欢迎使用
           </a>
         </Typography.Text>
-
 
         <Row gutter={16} className={styles.statisticBlock}>
           <Col span={12}>

@@ -1,14 +1,14 @@
-import React from 'react';
+import Footer from '@/components/Footer';
+import RightContent from '@/components/RightContent';
+import { requestInterceptor, responseInterceptor } from '@/utils/request';
+import { ignorePath } from '@/utils/utils';
 import type { Settings as LayoutSettings } from '@ant-design/pro-layout';
 import { PageLoading } from '@ant-design/pro-layout';
+import React from 'react';
 import type { RequestConfig, RunTimeLayoutConfig } from 'umi';
 import { history } from 'umi';
-import RightContent from '@/components/RightContent';
-import Footer from '@/components/Footer';
+import defaultSettings from '../config/defaultSettings';
 import { currentUser as queryCurrentUser } from './services/open-job/api';
-import {requestInterceptor, responseInterceptor} from "@/utils/request";
-import {ignorePath} from "@/utils/utils";
-import defaultSettings from "../config/defaultSettings";
 
 const loginPath = '/login';
 
@@ -48,7 +48,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
     rightContentRender: () => <RightContent />,
     disableContentMargin: false,
     waterMarkProps: {
-      content: 'Open-Job',
+      content: 'Open-Cache-Dashboard',
     },
     footerRender: () => <Footer />,
     onPageChange: () => {
@@ -57,13 +57,11 @@ export const layout: RunTimeLayoutConfig = ({ initialState }) => {
       }
     },
     menuHeaderRender: undefined,
-    // 自定义 403 页面
-    // unAccessible: <div>unAccessible</div>,
     ...initialState?.settings,
   };
 };
 
 export const request: RequestConfig = {
   requestInterceptors: [requestInterceptor],
-  responseInterceptors: [responseInterceptor]
+  responseInterceptors: [responseInterceptor],
 };

@@ -1,16 +1,12 @@
-import {
-  LockOutlined,
-  MobileOutlined,
-  UserOutlined
-} from '@ant-design/icons';
-import {message, Tabs, Image} from 'antd';
-import React, {useCallback, useEffect, useState} from 'react';
-import ProForm, { ProFormCaptcha, ProFormText } from '@ant-design/pro-form';
-import { useIntl, Link, history, FormattedMessage, SelectLang, useModel } from 'umi';
 import Footer from '@/components/Footer';
-import { login, getFakeImageCaptcha, getFakeSmsCaptcha} from '@/services/open-job/api';
+import { getFakeImageCaptcha, getFakeSmsCaptcha, login } from '@/services/open-job/api';
+import { getDeviceId, setAccessToken } from '@/utils/cache';
+import { LockOutlined, MobileOutlined, UserOutlined } from '@ant-design/icons';
+import ProForm, { ProFormCaptcha, ProFormText } from '@ant-design/pro-form';
+import { Image, message, Tabs } from 'antd';
+import React, { useCallback, useEffect, useState } from 'react';
+import { FormattedMessage, history, Link, SelectLang, useIntl, useModel } from 'umi';
 import styles from './index.less';
-import {getDeviceId, setAccessToken} from "@/utils/cache";
 
 /** 此方法会跳转到 redirect 参数所在的位置 */
 const goto = () => {
@@ -24,34 +20,40 @@ const Login: React.FC = () => {
   const { refresh } = useModel('@@initialState');
   const [submitting, setSubmitting] = useState(false);
   const [type, setType] = useState<string>('account');
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState('');
 
   const intl = useIntl();
 
   const onGetImageCaptcha = useCallback(async () => {
-    const result = await getFakeImageCaptcha({deviceId: getDeviceId()});
-    if (result && result.success) setImageUrl(`data:image/jpeg;base64,${result.imageCode}`)
+    getFakeImageCaptcha({ deviceId: getDeviceId() })
+      .then((result) => {
+        if (result && result.success) setImageUrl(`data:image/jpeg;base64,${result.imageCode}`);
+      })
+      .catch((error) => {
+        message.success(`获取验证码失败:${error}`);
+      });
   }, []);
 
-  useEffect(()=>{
-    if (type === "account"){
-      onGetImageCaptcha().then()
+  useEffect(() => {
+    if (type === 'account') {
+      onGetImageCaptcha().then();
     }
-  },[]);
+  }, []);
 
   const handlerSubmit = async (values: API.LoginParams) => {
     setSubmitting(true);
-    login({ ...values, type, deviceId: getDeviceId()})
-      .then((res)=>{
+    login({ ...values, type, deviceId: getDeviceId() })
+      .then((res) => {
         if (res) {
           setAccessToken(res.accessToken);
-          message.success("登录成功！");
+          message.success('登录成功！');
           goto();
           refresh().then();
         }
-      }).catch((reason)=>{
-      message.success(`登录失败:${reason}`);
-    });
+      })
+      .catch((reason) => {
+        message.success(`登录失败:${reason}`);
+      });
     setSubmitting(false);
   };
 
@@ -64,7 +66,7 @@ const Login: React.FC = () => {
         <div className={styles.top}>
           <div className={styles.header}>
             <Link to="/">
-              <span className={styles.title}>Open Job</span>
+              <span className={styles.title}>Open Cache</span>
             </Link>
           </div>
           <div className={styles.desc}>
@@ -171,14 +173,10 @@ const Login: React.FC = () => {
                   })}
                   captchaTextRender={() => {
                     return (
-                      <div style={{width: "100px", height: "100%"}}>
-                        <Image
-                          preview={false}
-                          src={imageUrl}
-                          onClick={onGetImageCaptcha}
-                        />
+                      <div style={{ width: '100px', height: '100%' }}>
+                        <Image preview={false} src={imageUrl} />
                       </div>
-                    )
+                    );
                   }}
                   name="captcha"
                   rules={[
@@ -192,6 +190,7 @@ const Login: React.FC = () => {
                       ),
                     },
                   ]}
+                  onGetCaptcha={onGetImageCaptcha}
                 />
               </>
             )}
@@ -267,7 +266,7 @@ const Login: React.FC = () => {
                   ]}
                   phoneName="mobile"
                   onGetCaptcha={async (mobile) => {
-                    const result = await getFakeSmsCaptcha({mobile, deviceId: getDeviceId()});
+                    const result = await getFakeSmsCaptcha({ mobile, deviceId: getDeviceId() });
                     if (result && result.success) {
                       message.success('短信验证码已发送！请注意查收');
                     }
@@ -278,7 +277,7 @@ const Login: React.FC = () => {
             <div
               style={{
                 marginBottom: 24,
-                height: 8
+                height: 8,
               }}
             >
               <a

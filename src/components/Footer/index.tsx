@@ -1,7 +1,7 @@
-import React from 'react';
-import { useIntl } from 'umi';
 import { GithubOutlined } from '@ant-design/icons';
 import { DefaultFooter } from '@ant-design/pro-layout';
+import React from 'react';
+import { useIntl } from 'umi';
 
 export default () => {
   const intl = useIntl();
@@ -15,21 +15,21 @@ export default () => {
       copyright={`2022 ${defaultMessage}`}
       links={[
         {
-          key: 'Open-Job-Admin',
-          title: 'Open-Job-Admin',
-          href: 'https://github.com/lijunping365/Open-Job-Admin',
+          key: 'Open-Cache-Dashboard',
+          title: 'Open-Cache-Dashboard',
+          href: 'https://github.com/lijunping365/Open-Cache-Dashboard',
           blankTarget: true,
         },
         {
           key: 'github',
           title: <GithubOutlined />,
-          href: 'https://github.com/lijunping365/Open-Job-Admin',
+          href: 'https://github.com/lijunping365/Open-Cache-Dashboard',
           blankTarget: true,
         },
         {
-          key: 'Open Job',
-          title: 'Open Job',
-          href: 'https://github.com/lijunping365/Open-Job',
+          key: 'Open Cache',
+          title: 'Open Cache',
+          href: 'https://github.com/lijunping365/Open-Cache',
           blankTarget: true,
         },
       ]}
