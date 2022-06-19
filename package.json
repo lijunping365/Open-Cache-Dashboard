@@ -104,6 +104,6 @@
     "node": ">=10.0.0"
   },
   "gitHooks": {
-    "commit-msg": "no verify"
+    "commit-msg": "fabric verify-commit"
   }
 }
