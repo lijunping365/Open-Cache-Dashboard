@@ -25,12 +25,6 @@
     component: './app',
   },
   {
-    name: 'job',
-    icon: 'table',
-    path: '/job',
-    component: './job',
-  },
-  {
     name: 'logger',
     icon: 'smile',
     path: 'logger',
@@ -45,10 +39,10 @@
     hideInMenu: true,
   },
   {
-    name: 'admin',
+    name: 'user',
     icon: 'table',
-    path: '/admin',
-    component: './admin',
+    path: '/user',
+    component: './user',
   },
   {
     path: '/',
