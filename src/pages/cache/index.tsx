@@ -78,6 +78,11 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
       title: '缓存名称',
       dataIndex: 'cacheName',
       valueType: 'text',
+    },
+    {
+      title: '缓存Key数量',
+      dataIndex: 'cacheKeySize',
+      valueType: 'text',
       search: false
     },
     {
