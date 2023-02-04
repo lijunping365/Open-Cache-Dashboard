@@ -140,13 +140,13 @@ const TableList: React.FC = () => {
           <Divider type="vertical" />
             <Link
               to={{
-                pathname: '/executor',
+                pathname: '/cache',
                 search: `?id=${record.id}`,
                 hash: '#the-hash',
                 state: { fromDashboard: true },
               }}
             >
-              查看节点
+              查看缓存
             </Link>
         </>
       ),

@@ -19,6 +19,13 @@
     component: './app',
   },
   {
+    name: 'cache',
+    icon: 'smile',
+    path: 'cache',
+    component: './cache',
+    hideInMenu: true,
+  },
+  {
     name: 'logger',
     icon: 'smile',
     path: 'logger',
