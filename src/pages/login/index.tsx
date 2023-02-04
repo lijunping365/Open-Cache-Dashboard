@@ -1,5 +1,5 @@
 import Footer from '@/components/Footer';
-import { getFakeImageCaptcha, getFakeSmsCaptcha, login } from '@/services/open-job/api';
+import { getFakeImageCaptcha, getFakeSmsCaptcha, login } from '@/services/open-cache/login';
 import { getDeviceId, setAccessToken } from '@/utils/cache';
 import { LockOutlined, MobileOutlined, UserOutlined } from '@ant-design/icons';
 import ProForm, { ProFormCaptcha, ProFormText } from '@ant-design/pro-form';

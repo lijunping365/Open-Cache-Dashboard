@@ -13,12 +13,6 @@
     component: './Welcome',
   },
   {
-    name: 'dashboard',
-    icon: 'table',
-    path: '/dashboard',
-    component: './dashboard',
-  },
-  {
     name: 'app',
     icon: 'table',
     path: '/app',
@@ -29,14 +23,6 @@
     icon: 'smile',
     path: 'logger',
     component: './logger',
-    hideInMenu: true,
-  },
-  {
-    name: 'executor',
-    icon: 'table',
-    path: '/executor',
-    component: './executor',
-    hideInMenu: true,
   },
   {
     name: 'user',

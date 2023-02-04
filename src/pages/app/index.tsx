@@ -5,7 +5,7 @@ import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import UpdateForm from './components/UpdateForm';
-import { fetchOpenJobAppPage, addOpenJobApp, updateOpenJobApp, removeOpenJobApp} from '@/services/open-job/api';
+import { fetchOpenCacheAppPage, addOpenCacheApp, updateOpenCacheApp, removeOpenCacheApp} from '@/services/open-cache/app';
 import {confirmModal} from "@/components/ConfirmModel";
 import CreateForm from "./components/CreateForm";
 import {Link} from "@umijs/preset-dumi/lib/theme";
@@ -15,10 +15,10 @@ import {Link} from "@umijs/preset-dumi/lib/theme";
  *
  * @param fields
  */
-const handleAdd = async (fields: Partial<API.OpenJobApp>) => {
+const handleAdd = async (fields: Partial<API.OpenCacheApp>) => {
   const hide = message.loading('正在添加');
   try {
-    await addOpenJobApp(fields);
+    await addOpenCacheApp(fields);
     hide();
     message.success('添加成功');
     return true;
@@ -34,10 +34,10 @@ const handleAdd = async (fields: Partial<API.OpenJobApp>) => {
  *
  * @param fields
  */
-const handleUpdate = async (fields: Partial<API.OpenJobApp>) => {
+const handleUpdate = async (fields: Partial<API.OpenCacheApp>) => {
   const hide = message.loading('正在配置');
   try {
-    await updateOpenJobApp(fields);
+    await updateOpenCacheApp(fields);
     hide();
 
     message.success('配置成功');
@@ -58,7 +58,7 @@ const handleRemove = async (selectedRows: any[]) => {
   const hide = message.loading('正在删除');
   if (!selectedRows) return true;
   try {
-    await removeOpenJobApp({ids: selectedRows});
+    await removeOpenCacheApp({ids: selectedRows});
     hide();
     message.success('删除成功，即将刷新');
     return true;
@@ -78,9 +78,9 @@ const TableList: React.FC = () => {
 
   const actionRef = useRef<ActionType>();
   // const [currentRow, setCurrentRow] = useState<ScheduleTask>();
-  const [selectedRowsState, setSelectedRows] = useState<API.OpenJobApp[]>([]);
+  const [selectedRowsState, setSelectedRows] = useState<API.OpenCacheApp[]>([]);
 
-  const columns: ProColumns<API.OpenJobApp>[] = [
+  const columns: ProColumns<API.OpenCacheApp>[] = [
     {
       title: '应用编号',
       dataIndex: 'id',
@@ -155,7 +155,7 @@ const TableList: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<API.OpenJobApp>
+      <ProTable<API.OpenCacheApp>
         headerTitle="查询表格"
         actionRef={actionRef}
         rowKey="id"
@@ -175,7 +175,7 @@ const TableList: React.FC = () => {
         ]}
 
         request={async (params) => {
-          const response = await fetchOpenJobAppPage({ ...params });
+          const response = await fetchOpenCacheAppPage({ ...params });
           return {
             data: response.records,
             total: response.total,

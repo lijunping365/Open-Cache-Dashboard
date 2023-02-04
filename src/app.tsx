@@ -8,7 +8,7 @@ import React from 'react';
 import type { RequestConfig, RunTimeLayoutConfig } from 'umi';
 import { history } from 'umi';
 import defaultSettings from '../config/defaultSettings';
-import { currentUser as queryCurrentUser } from './services/open-job/api';
+import { currentUser as queryCurrentUser } from './services/open-cache/api';
 
 const loginPath = '/login';
 

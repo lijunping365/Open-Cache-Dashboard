@@ -17,29 +17,14 @@ declare namespace API {
     weight: number;
   };
 
-  type StatisticNumber = {
-    taskTotalNum: number;
-    taskRunningNum: number;
-    scheduleTotalNum: number;
-    scheduleSucceedNum: number;
-    executorTotalNum: number;
-    executorOnlineNum: number;
-  }
-
-  type StatisticReport = {
-    date: Date;
-    name: string;
-    value: number;
-  }
-
-  type OpenJobLog = {
+  type OpenCacheOperationLog = {
     id: number;
-    jobId: number;
+    appId: number;
     status: number;
     createTime: Date;
   };
 
-  type OpenJobApp = {
+  type OpenCacheApp = {
     id: number;
     appName: string;
     appDesc: string;
