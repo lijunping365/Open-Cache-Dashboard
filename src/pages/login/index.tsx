@@ -174,7 +174,11 @@ const Login: React.FC = () => {
                   captchaTextRender={() => {
                     return (
                       <div style={{ width: '100px', height: '100%' }}>
-                        <Image preview={false} src={imageUrl} />
+                        <Image
+                          preview={false}
+                          src={imageUrl}
+                          onClick={onGetImageCaptcha}
+                        />
                       </div>
                     );
                   }}
@@ -190,7 +194,6 @@ const Login: React.FC = () => {
                       ),
                     },
                   ]}
-                  onGetCaptcha={onGetImageCaptcha}
                 />
               </>
             )}
