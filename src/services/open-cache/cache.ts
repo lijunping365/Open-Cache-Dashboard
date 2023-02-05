@@ -19,6 +19,16 @@ export async function fetchCacheNamesPage(
   });
 }
 
+/** 根据 key 清除 */
+export async function getCache(params: Partial<API.CacheParams>) {
+  return request('/cache/get', {
+    method: 'POST',
+    data: {
+      ...params,
+    }
+  });
+}
+
 /** 二级缓存数据加载到一级缓存 */
 export async function preloadCache(params: Partial<API.PreloadCacheParams>) {
   return request('/cache/preload', {

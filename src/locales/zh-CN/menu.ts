@@ -7,6 +7,7 @@ export default {
   'menu.dashboard': '运行报表',
   'menu.executor': '执行器管理',
   'menu.app': '应用管理',
+  'menu.cache': '缓存管理',
   'menu.job': '任务管理',
   'menu.logger': '任务日志',
   'menu.admin': '用户管理',
