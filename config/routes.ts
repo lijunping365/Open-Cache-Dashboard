@@ -19,10 +19,24 @@
     component: './app',
   },
   {
-    name: 'cache',
+    name: 'cacheKeys',
     icon: 'smile',
-    path: 'cache',
-    component: './cache',
+    path: 'cacheKeys',
+    component: './cacheKeys',
+    hideInMenu: true,
+  },
+  {
+    name: 'cacheNames',
+    icon: 'smile',
+    path: 'cacheNames',
+    component: './cacheNames',
+    hideInMenu: true,
+  },
+  {
+    name: 'cacheMetrics',
+    icon: 'smile',
+    path: 'cacheMetrics',
+    component: './cacheMetrics',
     hideInMenu: true,
   },
   {
