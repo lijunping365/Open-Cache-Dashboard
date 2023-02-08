@@ -32,7 +32,7 @@ const doEvictCache = async (appId: number, cacheName: any, cacheKey: any[]) => {
   const hide = message.loading('正在删除');
   if (!cacheName) return true;
   try {
-    await evictCache({appId, cacheName, key: cacheKey});
+    await evictCache({appId, cacheName, keys: cacheKey});
     hide();
     message.success('删除成功，即将刷新');
     return true;

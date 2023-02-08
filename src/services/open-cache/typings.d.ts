@@ -103,7 +103,7 @@ declare namespace API {
   type CacheEvictParams = {
     appId?: number;
     cacheName?: string;
-    key?: any[];
+    keys?: any[];
   };
 
   type CacheParams = {
