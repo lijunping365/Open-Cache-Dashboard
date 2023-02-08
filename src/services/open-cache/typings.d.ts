@@ -90,6 +90,19 @@ declare namespace API {
     cacheKey?: string;
   };
 
+  type CacheMetricsItem = {
+    id?: number;
+    appId?: number;
+    instanceId?: string;
+    cacheName?: string;
+    requestCount?: number;
+    hitCount?: number;
+    missCount?: number;
+    hitRate?: number;
+    missRate?: number;
+    createTime?: Date;
+  };
+
   type PreloadCacheParams = {
     appId?: number;
     cacheNames?: any[];

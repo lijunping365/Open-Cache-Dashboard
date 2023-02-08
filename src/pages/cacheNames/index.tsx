@@ -100,6 +100,17 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
           >
             缓存管理
           </Link>
+          <Divider type="vertical" />
+          <Link
+            to={{
+              pathname: '/cacheMetrics',
+              search: `?appId=${appId}&cacheName=${record.cacheName}`,
+              hash: '#the-hash',
+              state: { fromDashboard: true },
+            }}
+          >
+            查看指标
+          </Link>
         </>
       ),
     },
