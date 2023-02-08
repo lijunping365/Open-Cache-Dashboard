@@ -1,14 +1,19 @@
 import { PlusOutlined } from '@ant-design/icons';
-import {Button, message, Divider} from 'antd';
+import { Button, message, Divider } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import UpdateForm from './components/UpdateForm';
-import { fetchOpenCacheAppPage, addOpenCacheApp, updateOpenCacheApp, removeOpenCacheApp} from '@/services/open-cache/app';
-import {confirmModal} from "@/components/ConfirmModel";
-import CreateForm from "./components/CreateForm";
-import {Link} from "@umijs/preset-dumi/lib/theme";
+import {
+  fetchOpenCacheAppPage,
+  addOpenCacheApp,
+  updateOpenCacheApp,
+  removeOpenCacheApp,
+} from '@/services/open-cache/app';
+import { confirmModal } from '@/components/ConfirmModel';
+import CreateForm from './components/CreateForm';
+import { Link } from '@umijs/preset-dumi/lib/theme';
 
 /**
  * 添加节点
@@ -58,7 +63,7 @@ const handleRemove = async (selectedRows: any[]) => {
   const hide = message.loading('正在删除');
   if (!selectedRows) return true;
   try {
-    await removeOpenCacheApp({ids: selectedRows});
+    await removeOpenCacheApp({ ids: selectedRows });
     hide();
     message.success('删除成功，即将刷新');
     return true;
@@ -129,7 +134,7 @@ const TableList: React.FC = () => {
           <a
             onClick={async () => {
               const confirm = await confirmModal();
-              if (confirm){
+              if (confirm) {
                 await handleRemove([record.id]);
                 actionRef.current?.reloadAndRest?.();
               }
@@ -138,16 +143,16 @@ const TableList: React.FC = () => {
             删除
           </a>
           <Divider type="vertical" />
-            <Link
-              to={{
-                pathname: '/cache',
-                search: `?id=${record.id}`,
-                hash: '#the-hash',
-                state: { fromDashboard: true },
-              }}
-            >
-              查看缓存
-            </Link>
+          <Link
+            to={{
+              pathname: '/cacheNames',
+              search: `?id=${record.id}`,
+              hash: '#the-hash',
+              state: { fromDashboard: true },
+            }}
+          >
+            查看缓存
+          </Link>
         </>
       ),
     },
@@ -173,7 +178,6 @@ const TableList: React.FC = () => {
             <PlusOutlined /> 新建
           </Button>,
         ]}
-
         request={async (params) => {
           const response = await fetchOpenCacheAppPage({ ...params });
           return {
@@ -201,7 +205,7 @@ const TableList: React.FC = () => {
         >
           <Button
             onClick={async () => {
-              await handleRemove(selectedRowsState ? selectedRowsState.map((e) => e.id):[]);
+              await handleRemove(selectedRowsState ? selectedRowsState.map((e) => e.id) : []);
               setSelectedRows([]);
               actionRef.current?.reloadAndRest?.();
             }}
@@ -222,8 +226,8 @@ const TableList: React.FC = () => {
           }
         }}
         onCancel={() => handleCreateModalVisible(false)}
-        modalVisible={createModalVisible}>
-      </CreateForm>
+        modalVisible={createModalVisible}
+      ></CreateForm>
       {updateFormValues && Object.keys(updateFormValues).length ? (
         <UpdateForm
           onSubmit={async (value) => {
