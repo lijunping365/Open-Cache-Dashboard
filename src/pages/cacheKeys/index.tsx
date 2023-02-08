@@ -4,21 +4,19 @@ import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import {
-  fetchCacheNamesPage,
-  preloadCache,
-  clearCache,
+  fetchCacheKeysPage,
   updateCache,
   evictCache,
-  getCache
+  getCacheValue
 } from '@/services/open-cache/cache';
 import {confirmModal} from "@/components/ConfirmModel";
 import type {RouteChildrenProps} from "react-router";
 
-const doGetCache = async (appId: number, cacheName: any) => {
+const doGetCacheValue = async (appId: number, cacheName: any, cacheKey: any) => {
   const hide = message.loading('正在删除');
   if (!cacheName) return true;
   try {
-    const result = await getCache({appId, cacheName, key: "loadUserById16:1"});
+    const result = await getCacheValue({appId, cacheName, key: cacheKey});
     console.log("dddddddddd:" + JSON.stringify(result))
     hide();
     message.success('删除成功，即将刷新');
@@ -30,41 +28,11 @@ const doGetCache = async (appId: number, cacheName: any) => {
   }
 };
 
-const doPreloadCache = async (appId: number, cacheNames: any[]) => {
-  const hide = message.loading('正在删除');
-  if (!cacheNames) return true;
-  try {
-    await preloadCache({appId, cacheNames});
-    hide();
-    message.success('删除成功，即将刷新');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('删除失败，请重试');
-    return false;
-  }
-};
-
-const doClearCache = async (appId: number, cacheNames: any[]) => {
-  const hide = message.loading('正在删除');
-  if (!cacheNames) return true;
-  try {
-    await clearCache({appId, cacheNames});
-    hide();
-    message.success('删除成功，即将刷新');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('删除失败，请重试');
-    return false;
-  }
-};
-
-const doEvictCache = async (appId: number, cacheName: any) => {
+const doEvictCache = async (appId: number, cacheName: any, cacheKey: any) => {
   const hide = message.loading('正在删除');
   if (!cacheName) return true;
   try {
-    await evictCache({appId, cacheName});
+    await evictCache({appId, cacheName, key: cacheKey});
     hide();
     message.success('删除成功，即将刷新');
     return true;
@@ -75,11 +43,11 @@ const doEvictCache = async (appId: number, cacheName: any) => {
   }
 };
 
-const doUpdateCache = async (appId: number, cacheName: any) => {
+const doUpdateCache = async (appId: number, cacheName: any, cacheKey: any, cacheValue: any) => {
   const hide = message.loading('正在删除');
   if (!cacheName) return true;
   try {
-    await updateCache({appId, cacheName, key: "loadUserById:1", value: '{"@class":"com.saucesubfresh.cache.sample.domain.UserDO","id":["java.lang.Long",1],"name":"lijunping & pengguifang888888888888"}'});
+    await updateCache({appId, cacheName, key: cacheKey, value: '{"@class":"com.saucesubfresh.cache.sample.domain.UserDO","id":["java.lang.Long",1],"name":"lijunping & pengguifang888888888888"}'});
     hide();
     message.success('删除成功，即将刷新');
     return true;
@@ -92,21 +60,16 @@ const doUpdateCache = async (appId: number, cacheName: any) => {
 
 const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
   const actionRef = useRef<ActionType>();
-  const [selectedRowsState, setSelectedRows] = useState<API.CacheNameItem[]>([]);
+  const [selectedRowsState, setSelectedRows] = useState<API.CacheKeyItem[]>([]);
   const { query }: any = location;
-  const [appId] = useState<number>(query? query.id : 0);
+  const [appId] = useState<number>(query? query.appId : 0);
+  const [cacheName] = useState<string>(query? query.cacheName : '');
 
-  const columns: ProColumns<API.CacheNameItem>[] = [
+  const columns: ProColumns<API.CacheKeyItem>[] = [
     {
-      title: '缓存名称',
-      dataIndex: 'cacheName',
+      title: '缓存Key',
+      dataIndex: 'cacheKey',
       valueType: 'text',
-    },
-    {
-      title: '缓存Key数量',
-      dataIndex: 'cacheKeySize',
-      valueType: 'text',
-      search: false
     },
     {
       title: '操作',
@@ -118,7 +81,7 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
             onClick={async () => {
               const confirm = await confirmModal();
               if (confirm){
-                await doGetCache(appId, record.cacheName);
+                await doGetCacheValue(appId, cacheName, record.cacheKey);
                 actionRef.current?.reloadAndRest?.();
               }
             }}
@@ -130,48 +93,24 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
             onClick={async () => {
               const confirm = await confirmModal();
               if (confirm){
-                await doPreloadCache(appId, [record.cacheName]);
-                actionRef.current?.reloadAndRest?.();
-              }
-            }}
-          >
-            缓存预热
-          </a>
-          <Divider type="vertical" />
-          <a
-            onClick={async () => {
-              const confirm = await confirmModal();
-              if (confirm){
-                await doClearCache(appId, [record.cacheName]);
-                actionRef.current?.reloadAndRest?.();
-              }
-            }}
-          >
-            清除缓存
-          </a>
-          <Divider type="vertical" />
-          <a
-            onClick={async () => {
-              const confirm = await confirmModal();
-              if (confirm){
-                await doEvictCache(appId, record.cacheName);
-                actionRef.current?.reloadAndRest?.();
-              }
-            }}
-          >
-            删除缓存
-          </a>
-          <Divider type="vertical" />
-          <a
-            onClick={async () => {
-              const confirm = await confirmModal();
-              if (confirm){
-                await doUpdateCache(appId, record.cacheName);
+                await doUpdateCache(appId, cacheName, record.cacheKey, '');
                 actionRef.current?.reloadAndRest?.();
               }
             }}
           >
             更新缓存
+          </a>
+          <Divider type="vertical" />
+          <a
+            onClick={async () => {
+              const confirm = await confirmModal();
+              if (confirm){
+                await doEvictCache(appId, cacheName, record.cacheKey);
+                actionRef.current?.reloadAndRest?.();
+              }
+            }}
+          >
+            删除缓存
           </a>
           <Divider type="vertical" />
         </>
@@ -181,7 +120,7 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
 
   return (
     <PageContainer>
-      <ProTable<API.CacheNameItem>
+      <ProTable<API.CacheKeyItem>
         headerTitle="查询表格"
         actionRef={actionRef}
         rowKey="id"
@@ -190,7 +129,7 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
         }}
         toolBarRender={() => []}
         request={async (params) => {
-          const response = await fetchCacheNamesPage({ ...params, appId });
+          const response = await fetchCacheKeysPage({ ...params, appId, cacheName });
           return {
             data: response.records,
             total: response.total,
@@ -214,15 +153,6 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
             </div>
           }
         >
-          <Button
-            onClick={async () => {
-              await doPreloadCache(appId,selectedRowsState ? selectedRowsState.map((e) => e.cacheName):[]);
-              setSelectedRows([]);
-              actionRef.current?.reloadAndRest?.();
-            }}
-          >
-            批量预热
-          </Button>
           <Button
             onClick={async () => {
               await doClearCache(appId, selectedRowsState ? selectedRowsState.map((e) => e.cacheName):[]);

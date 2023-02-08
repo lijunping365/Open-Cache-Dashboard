@@ -86,6 +86,10 @@ declare namespace API {
     cacheKeySize?: string;
   };
 
+  type CacheKeyItem = {
+    cacheKey?: string;
+  };
+
   type PreloadCacheParams = {
     appId?: number;
     cacheNames?: any[];

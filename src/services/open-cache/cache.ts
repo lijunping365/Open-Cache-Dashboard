@@ -19,8 +19,29 @@ export async function fetchCacheNamesPage(
   });
 }
 
+export async function fetchCacheKeysPage(
+  params: {
+    // query
+    /** 当前的页码 */
+    current?: number;
+    /** 页面的容量 */
+    pageSize?: number;
+    /** 应用id */
+    appId?: number;
+    /** 应用id */
+    cacheName?: string;
+  }
+) {
+  return request('/cache/cacheKeys', {
+    method: 'GET',
+    params: {
+      ...params,
+    },
+  });
+}
+
 /** 根据 key 清除 */
-export async function getCache(params: Partial<API.CacheParams>) {
+export async function getCacheValue(params: Partial<API.CacheParams>) {
   return request('/cache/get', {
     method: 'POST',
     data: {
