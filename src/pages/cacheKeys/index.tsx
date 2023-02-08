@@ -28,7 +28,7 @@ const doGetCacheValue = async (appId: number, cacheName: any, cacheKey: any) => 
   }
 };
 
-const doEvictCache = async (appId: number, cacheName: any, cacheKey: any) => {
+const doEvictCache = async (appId: number, cacheName: any, cacheKey: any[]) => {
   const hide = message.loading('正在删除');
   if (!cacheName) return true;
   try {
@@ -105,7 +105,7 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
             onClick={async () => {
               const confirm = await confirmModal();
               if (confirm){
-                await doEvictCache(appId, cacheName, record.cacheKey);
+                await doEvictCache(appId, cacheName, [record.cacheKey]);
                 actionRef.current?.reloadAndRest?.();
               }
             }}
@@ -155,12 +155,12 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
         >
           <Button
             onClick={async () => {
-              await doClearCache(appId, selectedRowsState ? selectedRowsState.map((e) => e.cacheName):[]);
+              await doEvictCache(appId, cacheName, selectedRowsState ? selectedRowsState.map((e) => e.cacheKey):[]);
               setSelectedRows([]);
               actionRef.current?.reloadAndRest?.();
             }}
           >
-            批量清除
+            批量删除
           </Button>
         </FooterToolbar>
       )}

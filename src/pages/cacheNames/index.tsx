@@ -98,7 +98,7 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
               state: { fromDashboard: true },
             }}
           >
-            查看缓存
+            缓存管理
           </Link>
         </>
       ),

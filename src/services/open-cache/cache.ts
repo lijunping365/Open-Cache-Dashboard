@@ -71,7 +71,7 @@ export async function clearCache(params: Partial<API.ClearCacheParams>) {
 }
 
 /** 根据 key 清除 */
-export async function evictCache(params: Partial<API.CacheParams>) {
+export async function evictCache(params: Partial<API.CacheEvictParams>) {
   return request('/cache/evict', {
     method: 'POST',
     data: {

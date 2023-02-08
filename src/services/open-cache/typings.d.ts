@@ -100,6 +100,12 @@ declare namespace API {
     cacheNames?: any[];
   };
 
+  type CacheEvictParams = {
+    appId?: number;
+    cacheName?: string;
+    key?: any[];
+  };
+
   type CacheParams = {
     appId?: number;
     cacheName?: string;
