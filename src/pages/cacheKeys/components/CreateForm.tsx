@@ -4,7 +4,7 @@ import {Button, Form, Input, Modal} from 'antd';
 interface CreateFormProps {
   modalVisible: boolean;
   onCancel: (flag?: boolean) => void;
-  onSubmit: (values: Partial<API.OpenCacheApp>) => void;
+  onSubmit: (values: Partial<API.OpenCacheValue>) => void;
 }
 
 const FormItem = Form.Item;
@@ -45,7 +45,7 @@ const CreateForm: React.FC<CreateFormProps> = (props) => {
   return (
     <Modal
       destroyOnClose
-      title="新建应用"
+      title="新建缓存"
       width={600}
       visible={modalVisible}
       footer={renderFooter()}
@@ -57,18 +57,18 @@ const CreateForm: React.FC<CreateFormProps> = (props) => {
         form={form}
       >
         <FormItem
-          name="appName"
-          label="应用名称"
-          rules={[{ required: true, message: '请输入应用名称！' }]}
+          name="cacheKey"
+          label="缓存 key"
+          rules={[{ required: true, message: '请输入缓存键！' }]}
         >
-          <Input placeholder="请输入应用名称" />
+          <Input placeholder="请输入缓存键" />
         </FormItem>
         <FormItem
-          name="appDesc"
-          label="应用描述"
-          rules={[{ required: true, message: '请输入应用描述！' }]}
+          name="cacheValue"
+          label="缓存 value"
+          rules={[{ required: true, message: '请输入缓存值！' }]}
         >
-          <Input placeholder="请输入应用描述" />
+          <Input placeholder="请输入缓存值" />
         </FormItem>
       </Form>
     </Modal>

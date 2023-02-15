@@ -1,69 +1,75 @@
-import {Button, message, Divider} from 'antd';
+import {Button, message, Divider, Modal} from 'antd';
 import React, {useState, useRef} from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import {
-  fetchCacheKeysPage,
-  updateCache,
-  evictCache,
-  getCacheValue
-} from '@/services/open-cache/cache';
+import {fetchCacheKeysPage, updateCache, evictCache, getCacheValue} from '@/services/open-cache/cache';
 import {confirmModal} from "@/components/ConfirmModel";
 import type {RouteChildrenProps} from "react-router";
-
-const doGetCacheValue = async (appId: number, cacheName: any, cacheKey: any) => {
-  const hide = message.loading('正在删除');
-  if (!cacheName) return true;
-  try {
-    const result = await getCacheValue({appId, cacheName, key: cacheKey});
-    console.log("dddddddddd:" + JSON.stringify(result))
-    hide();
-    message.success('删除成功，即将刷新');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('删除失败，请重试');
-    return false;
-  }
-};
-
-const doEvictCache = async (appId: number, cacheName: any, cacheKey: any[]) => {
-  const hide = message.loading('正在删除');
-  if (!cacheName) return true;
-  try {
-    await evictCache({appId, cacheName, keys: cacheKey});
-    hide();
-    message.success('删除成功，即将刷新');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('删除失败，请重试');
-    return false;
-  }
-};
-
-const doUpdateCache = async (appId: number, cacheName: any, cacheKey: any, cacheValue: any) => {
-  const hide = message.loading('正在删除');
-  if (!cacheName) return true;
-  try {
-    await updateCache({appId, cacheName, key: cacheKey, value: '{"@class":"com.saucesubfresh.cache.sample.domain.UserDO","id":["java.lang.Long",1],"name":"lijunping & pengguifang888888888888"}'});
-    hide();
-    message.success('删除成功，即将刷新');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('删除失败，请重试');
-    return false;
-  }
-};
+import ReactJson from 'react-json-view'
+import {PlusOutlined} from "@ant-design/icons";
+import CreateForm from "./components/CreateForm";
+import UpdateForm from "./components/UpdateForm";
 
 const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
+  /** 新建窗口的弹窗 */
+  const [createModalVisible, handleCreateModalVisible] = useState<boolean>(false);
+  /** 更新窗口的弹窗 */
+  const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
+  const [updateFormValues, setUpdateFormValues] = useState({});
   const actionRef = useRef<ActionType>();
   const [selectedRowsState, setSelectedRows] = useState<API.CacheKeyItem[]>([]);
   const { query }: any = location;
   const [appId] = useState<number>(query? query.appId : 0);
   const [cacheName] = useState<string>(query? query.cacheName : '');
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [data, setData] = useState<any>();
+
+
+  const doGetCacheValue = async (cacheKey: any) => {
+    const hide = message.loading('正在查询');
+    if (!cacheKey) return;
+    try {
+      const result = await getCacheValue({appId, cacheName, key: cacheKey});
+      hide();
+      setModalVisible(true);
+      setData(result && result.value ? JSON.parse(result.value) : '');
+    } catch (error) {
+      hide();
+      message.error('删除失败，请重试');
+    }
+  };
+
+  const doEvictCache = async (cacheKey: any[]) => {
+    const hide = message.loading('正在删除');
+    if (!cacheKey || cacheKey.length === 0) return true;
+    try {
+      await evictCache({appId, cacheName, keys: cacheKey});
+      hide();
+      message.success('删除成功，即将刷新');
+      return true;
+    } catch (error) {
+      hide();
+      message.error('删除失败，请重试');
+      return false;
+    }
+  };
+
+  const doUpdateCache = async (cacheKey: any, cacheValue: any) => {
+    const hide = message.loading('正在删除');
+    if (!cacheKey || !cacheValue) return true;
+    try {
+      await updateCache({appId, cacheName, key: cacheKey, value: '{"@class":"com.saucesubfresh.cache.sample.domain.UserDO","id":["java.lang.Long",1],"name":"lijunping & pengguifang888888888888"}'});
+      hide();
+      message.success('删除成功，即将刷新');
+      return true;
+    } catch (error) {
+      hide();
+      message.error('删除失败，请重试');
+      return false;
+    }
+  };
+
 
   const columns: ProColumns<API.CacheKeyItem>[] = [
     {
@@ -78,24 +84,17 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
       render: (_, record) => (
         <>
           <a
-            onClick={async () => {
-              const confirm = await confirmModal();
-              if (confirm){
-                await doGetCacheValue(appId, cacheName, record.cacheKey);
-                actionRef.current?.reloadAndRest?.();
-              }
+            onClick={() => {
+              doGetCacheValue(record.cacheKey).then();
             }}
           >
             查询缓存
           </a>
           <Divider type="vertical" />
           <a
-            onClick={async () => {
-              const confirm = await confirmModal();
-              if (confirm){
-                await doUpdateCache(appId, cacheName, record.cacheKey, '');
-                actionRef.current?.reloadAndRest?.();
-              }
+            onClick={() => {
+              handleUpdateModalVisible(true);
+              setUpdateFormValues(record);
             }}
           >
             更新缓存
@@ -105,7 +104,7 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
             onClick={async () => {
               const confirm = await confirmModal();
               if (confirm){
-                await doEvictCache(appId, cacheName, [record.cacheKey]);
+                await doEvictCache([record.cacheKey]);
                 actionRef.current?.reloadAndRest?.();
               }
             }}
@@ -127,7 +126,17 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
         search={{
           labelWidth: 120,
         }}
-        toolBarRender={() => []}
+        toolBarRender={() => [
+          <Button
+            type="primary"
+            key="primary"
+            onClick={() => {
+              handleCreateModalVisible(true);
+            }}
+          >
+            <PlusOutlined /> 新建缓存
+          </Button>,
+        ]}
         request={async (params) => {
           const response = await fetchCacheKeysPage({ ...params, appId, cacheName });
           return {
@@ -155,7 +164,7 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
         >
           <Button
             onClick={async () => {
-              await doEvictCache(appId, cacheName, selectedRowsState ? selectedRowsState.map((e) => e.cacheKey):[]);
+              await doEvictCache(selectedRowsState ? selectedRowsState.map((e) => e.cacheKey):[]);
               setSelectedRows([]);
               actionRef.current?.reloadAndRest?.();
             }}
@@ -164,6 +173,57 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
           </Button>
         </FooterToolbar>
       )}
+      <Modal
+        title="数据详情"
+        visible={modalVisible}
+        onOk={() => setModalVisible(false)}
+        onCancel={() => setModalVisible(false)}
+        width={600}
+      >
+        <ReactJson
+          src={data}
+          theme="google"
+          iconStyle="square"
+          enableClipboard={false}
+          displayDataTypes={false}
+          displayObjectSize={true}
+        />
+      </Modal>
+
+      <CreateForm
+        onSubmit={async (value) => {
+          const success = await doUpdateCache(value.cacheKey, value.cacheValue);
+          if (success) {
+            handleCreateModalVisible(false);
+            if (actionRef.current) {
+              actionRef.current.reload();
+            }
+          }
+        }}
+        onCancel={() => handleCreateModalVisible(false)}
+        modalVisible={createModalVisible}
+      />
+
+      {updateFormValues && Object.keys(updateFormValues).length ? (
+        <UpdateForm
+          onSubmit={async (value) => {
+            const success = await doUpdateCache(value.cacheKey, value.cacheValue);
+            if (success) {
+              handleUpdateModalVisible(false);
+              setUpdateFormValues({});
+              if (actionRef.current) {
+                actionRef.current.reload();
+              }
+            }
+          }}
+          onCancel={() => {
+            handleUpdateModalVisible(false);
+            setUpdateFormValues({});
+          }}
+          updateModalVisible={updateModalVisible}
+          values={updateFormValues}
+        />
+      ) : null}
     </PageContainer>
   );
 };

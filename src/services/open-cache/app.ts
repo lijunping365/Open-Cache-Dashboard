@@ -17,14 +17,14 @@ export async function fetchOpenCacheAppPage(
   });
 }
 
-export async function updateOpenCacheApp(params: Partial<API.OpenJob>) {
+export async function updateOpenCacheApp(params: Partial<API.OpenCacheApp>) {
   return request('/app/update', {
     method: 'PUT',
     data: {...params}
   });
 }
 
-export async function addOpenCacheApp(params: Partial<API.OpenJob>) {
+export async function addOpenCacheApp(params: Partial<API.OpenCacheApp>) {
   return request('/app/save', {
     method: 'POST',
     data: {...params}

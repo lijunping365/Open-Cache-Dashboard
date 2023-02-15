@@ -4,7 +4,6 @@ import React, { useState, useRef } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import UpdateForm from './components/UpdateForm';
 import {
   fetchOpenCacheAppPage,
   addOpenCacheApp,
@@ -12,6 +11,7 @@ import {
   removeOpenCacheApp,
 } from '@/services/open-cache/app';
 import { confirmModal } from '@/components/ConfirmModel';
+import UpdateForm from './components/UpdateForm';
 import CreateForm from './components/CreateForm';
 import { Link } from '@umijs/preset-dumi/lib/theme';
 
@@ -227,7 +227,7 @@ const TableList: React.FC = () => {
         }}
         onCancel={() => handleCreateModalVisible(false)}
         modalVisible={createModalVisible}
-      ></CreateForm>
+      />
       {updateFormValues && Object.keys(updateFormValues).length ? (
         <UpdateForm
           onSubmit={async (value) => {

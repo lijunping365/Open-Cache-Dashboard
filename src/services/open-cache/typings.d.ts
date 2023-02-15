@@ -32,16 +32,9 @@ declare namespace API {
     createUser: number;
   };
 
-  type OpenJob = {
-    id: number;
-    appId: number;
-    jobName: string;
-    handlerName: string;
-    cronExpression: string;
-    params: string;
-    status: number;
-    createTime: Date;
-    createUser: number;
+  type OpenCacheValue = {
+    cacheKey: string;
+    cacheValue: string;
   };
 
   type CurrentUser = {

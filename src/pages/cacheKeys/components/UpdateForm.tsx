@@ -2,10 +2,10 @@ import React from 'react';
 import { Form, Button, Input, Modal } from 'antd';
 
 export interface UpdateFormProps {
-  onCancel: (flag?: boolean, formVals?: Partial<API.User>) => void;
-  onSubmit: (values: Partial<API.User>) => void;
+  onCancel: (flag?: boolean, formVals?: Partial<API.OpenCacheValue>) => void;
+  onSubmit: (values: Partial<API.OpenCacheValue>) => void;
   updateModalVisible: boolean;
-  values: Partial<API.User>;
+  values: Partial<API.OpenCacheValue>;
 }
 const FormItem = Form.Item;
 
@@ -45,7 +45,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       width={640}
       bodyStyle={{ padding: '32px 40px 48px' }}
       destroyOnClose
-      title="用户编辑"
+      title="缓存编辑"
       visible={updateModalVisible}
       footer={renderFooter()}
       onCancel={() => handleUpdateModalVisible()}
@@ -54,22 +54,21 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
         {...formLayout}
         form={form}
         initialValues={{
-          id: values.id,
-          username: values.username,
-          phone: values.phone,
+          cacheKey: values.cacheKey,
+          cacheValue: values.cacheValue
         }}
       >
         <FormItem
-          name="key"
-          label="用户名称"
+          name="cacheKey"
+          label="缓存 key"
           rules={[{ required: true, message: '请输入缓存key！'}]}
         >
           <Input placeholder="请输入缓存key" />
         </FormItem>
 
         <FormItem
-          name="value"
-          label="手机号"
+          name="cacheValue"
+          label="缓存 value"
           rules={[{ required: true, message: '请输入缓存value！' }]}
         >
           <Input placeholder="请输入缓存value" />
