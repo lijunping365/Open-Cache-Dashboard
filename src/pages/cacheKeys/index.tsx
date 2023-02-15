@@ -24,7 +24,7 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
   const [cacheName] = useState<string>(query? query.cacheName : '');
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [data, setData] = useState<any>();
-
+  const [updateCacheValue, setUpdateCacheValue] = useState<any>();
 
   const doGetCacheValue = async (cacheKey: any) => {
     const hide = message.loading('正在查询');
@@ -59,7 +59,7 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
     const hide = message.loading('正在删除');
     if (!cacheKey || !cacheValue) return true;
     try {
-      await updateCache({appId, cacheName, key: cacheKey, value: '{"@class":"com.saucesubfresh.cache.sample.domain.UserDO","id":["java.lang.Long",1],"name":"lijunping & pengguifang888888888888"}'});
+      await updateCache({appId, cacheName, key: cacheKey, value: cacheValue});
       hide();
       message.success('删除成功，即将刷新');
       return true;
@@ -70,6 +70,22 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
     }
   };
 
+  const handlerUpdate = async (record: any) => {
+    const hide = message.loading('正在查询');
+    if (!record.cacheKey){
+      return
+    }
+    try {
+      const result = await getCacheValue({appId, cacheName, key: record.cacheKey});
+      hide();
+      setUpdateCacheValue(result ? result.value : '');
+      handleUpdateModalVisible(true);
+      setUpdateFormValues(record);
+    } catch (error) {
+      hide();
+      message.error('查值失败，请重试');
+    }
+  };
 
   const columns: ProColumns<API.CacheKeyItem>[] = [
     {
@@ -93,8 +109,7 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
           <Divider type="vertical" />
           <a
             onClick={() => {
-              handleUpdateModalVisible(true);
-              setUpdateFormValues(record);
+              handlerUpdate(record).then();
             }}
           >
             更新缓存
@@ -222,6 +237,7 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
           }}
           updateModalVisible={updateModalVisible}
           values={updateFormValues}
+          cacheValue={updateCacheValue}
         />
       ) : null}
     </PageContainer>

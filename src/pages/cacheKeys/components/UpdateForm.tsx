@@ -6,6 +6,7 @@ export interface UpdateFormProps {
   onSubmit: (values: Partial<API.OpenCacheValue>) => void;
   updateModalVisible: boolean;
   values: Partial<API.OpenCacheValue>;
+  cacheValue: string;
 }
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -23,6 +24,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
     onCancel: handleUpdateModalVisible,
     updateModalVisible,
     values,
+    cacheValue
   } = props;
 
   const handleNext = async () => {
@@ -56,7 +58,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
         form={form}
         initialValues={{
           cacheKey: values.cacheKey,
-          cacheValue: values.cacheValue
+          cacheValue: cacheValue
         }}
       >
         <FormItem
