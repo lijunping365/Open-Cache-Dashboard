@@ -8,6 +8,7 @@ export interface UpdateFormProps {
   values: Partial<API.OpenCacheValue>;
 }
 const FormItem = Form.Item;
+const { TextArea } = Input;
 
 const formLayout = {
   labelCol: { span: 7 },
@@ -71,7 +72,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
           label="缓存 value"
           rules={[{ required: true, message: '请输入缓存value！' }]}
         >
-          <Input placeholder="请输入缓存value" />
+          <TextArea rows={4}  placeholder="请输入缓存值（json 格式）" />
         </FormItem>
       </Form>
     </Modal>
