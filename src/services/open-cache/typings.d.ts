@@ -7,7 +7,7 @@ declare namespace API {
     username: string;
     status: number;
     phone: string;
-    createTime: Date
+    createTime: Date;
   };
 
   type Instance = {
@@ -75,6 +75,8 @@ declare namespace API {
   };
 
   type CacheNameItem = {
+    ttl?: number;
+    maxSize?: number;
     cacheName?: string;
     cacheKeySize?: string;
   };

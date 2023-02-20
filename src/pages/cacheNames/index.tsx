@@ -1,22 +1,18 @@
-import {Button, message, Divider} from 'antd';
-import React, {useState, useRef} from 'react';
+import { Button, message, Divider } from 'antd';
+import React, { useState, useRef } from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import {
-  fetchCacheNamesPage,
-  preloadCache,
-  clearCache
-} from '@/services/open-cache/cache';
-import {confirmModal} from "@/components/ConfirmModel";
-import type {RouteChildrenProps} from "react-router";
+import { fetchCacheNamesPage, preloadCache, clearCache } from '@/services/open-cache/cache';
+import { confirmModal } from '@/components/ConfirmModel';
+import type { RouteChildrenProps } from 'react-router';
 import { Link } from 'umi';
 
 const doPreloadCache = async (appId: number, cacheNames: any[]) => {
   const hide = message.loading('正在删除');
   if (!cacheNames) return true;
   try {
-    await preloadCache({appId, cacheNames});
+    await preloadCache({ appId, cacheNames });
     hide();
     message.success('删除成功，即将刷新');
     return true;
@@ -31,7 +27,7 @@ const doClearCache = async (appId: number, cacheNames: any[]) => {
   const hide = message.loading('正在删除');
   if (!cacheNames) return true;
   try {
-    await clearCache({appId, cacheNames});
+    await clearCache({ appId, cacheNames });
     hide();
     message.success('删除成功，即将刷新');
     return true;
@@ -46,19 +42,34 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
   const actionRef = useRef<ActionType>();
   const [selectedRowsState, setSelectedRows] = useState<API.CacheNameItem[]>([]);
   const { query }: any = location;
-  const [appId] = useState<number>(query? query.id : 0);
+  const [appId] = useState<number>(query ? query.id : 0);
 
   const columns: ProColumns<API.CacheNameItem>[] = [
     {
       title: '缓存名称',
       dataIndex: 'cacheName',
       valueType: 'text',
+      tip: '缓存名称在应用内唯一',
+    },
+    {
+      title: '本地缓存TTL',
+      dataIndex: 'ttl',
+      valueType: 'text',
+      search: false,
+      tip: '本地缓存失效时间，单位秒',
+    },
+    {
+      title: '本地缓存容量',
+      dataIndex: 'maxSize',
+      valueType: 'text',
+      search: false,
+      tip: '本地缓存最大数量',
     },
     {
       title: '缓存Key数量',
       dataIndex: 'cacheKeySize',
       valueType: 'text',
-      search: false
+      search: false,
     },
     {
       title: '操作',
@@ -69,7 +80,7 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
           <a
             onClick={async () => {
               const confirm = await confirmModal();
-              if (confirm){
+              if (confirm) {
                 await doPreloadCache(appId, [record.cacheName]);
                 actionRef.current?.reloadAndRest?.();
               }
@@ -81,7 +92,7 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
           <a
             onClick={async () => {
               const confirm = await confirmModal();
-              if (confirm){
+              if (confirm) {
                 await doClearCache(appId, [record.cacheName]);
                 actionRef.current?.reloadAndRest?.();
               }
@@ -153,7 +164,10 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
         >
           <Button
             onClick={async () => {
-              await doPreloadCache(appId,selectedRowsState ? selectedRowsState.map((e) => e.cacheName):[]);
+              await doPreloadCache(
+                appId,
+                selectedRowsState ? selectedRowsState.map((e) => e.cacheName) : [],
+              );
               setSelectedRows([]);
               actionRef.current?.reloadAndRest?.();
             }}
@@ -162,7 +176,10 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
           </Button>
           <Button
             onClick={async () => {
-              await doClearCache(appId, selectedRowsState ? selectedRowsState.map((e) => e.cacheName):[]);
+              await doClearCache(
+                appId,
+                selectedRowsState ? selectedRowsState.map((e) => e.cacheName) : [],
+              );
               setSelectedRows([]);
               actionRef.current?.reloadAndRest?.();
             }}
