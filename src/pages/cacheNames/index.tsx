@@ -9,31 +9,31 @@ import type { RouteChildrenProps } from 'react-router';
 import { Link } from 'umi';
 
 const doPreloadCache = async (appId: number, cacheNames: any[]) => {
-  const hide = message.loading('正在删除');
+  const hide = message.loading('正在预热缓存');
   if (!cacheNames) return true;
   try {
     await preloadCache({ appId, cacheNames });
     hide();
-    message.success('删除成功，即将刷新');
+    message.success('缓存预热成功，即将刷新');
     return true;
   } catch (error) {
     hide();
-    message.error('删除失败，请重试');
+    message.error('缓存预热失败，请重试');
     return false;
   }
 };
 
 const doClearCache = async (appId: number, cacheNames: any[]) => {
-  const hide = message.loading('正在删除');
+  const hide = message.loading('正在清除缓存');
   if (!cacheNames) return true;
   try {
     await clearCache({ appId, cacheNames });
     hide();
-    message.success('删除成功，即将刷新');
+    message.success('缓存清除成功，即将刷新');
     return true;
   } catch (error) {
     hide();
-    message.error('删除失败，请重试');
+    message.error('缓存清除失败，请重试');
     return false;
   }
 };

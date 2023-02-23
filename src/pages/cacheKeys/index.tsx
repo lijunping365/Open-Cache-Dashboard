@@ -27,7 +27,7 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
   const [updateCacheValue, setUpdateCacheValue] = useState<any>();
 
   const doGetCacheValue = async (cacheKey: any) => {
-    const hide = message.loading('正在查询');
+    const hide = message.loading('正在查询缓存');
     if (!cacheKey) return;
     try {
       const result = await getCacheValue({appId, cacheName, key: cacheKey});
@@ -36,42 +36,57 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
       setData(result && result.value ? JSON.parse(result.value) : '');
     } catch (error) {
       hide();
-      message.error('删除失败，请重试');
+      message.error('查询缓存失败，请重试');
     }
   };
 
   const doEvictCache = async (cacheKey: any[]) => {
-    const hide = message.loading('正在删除');
+    const hide = message.loading('正在删除缓存');
     if (!cacheKey || cacheKey.length === 0) return true;
     try {
       await evictCache({appId, cacheName, keys: cacheKey});
       hide();
-      message.success('删除成功，即将刷新');
+      message.success('删除缓存成功，即将刷新');
       return true;
     } catch (error) {
       hide();
-      message.error('删除失败，请重试');
+      message.error('删除缓存失败，请重试');
       return false;
     }
   };
 
   const doUpdateCache = async (cacheKey: any, cacheValue: any) => {
-    const hide = message.loading('正在删除');
+    const hide = message.loading('正在更新缓存');
     if (!cacheKey || !cacheValue) return true;
     try {
       await updateCache({appId, cacheName, key: cacheKey, value: cacheValue});
       hide();
-      message.success('删除成功，即将刷新');
+      message.success('更新缓存成功，即将刷新');
       return true;
     } catch (error) {
       hide();
-      message.error('删除失败，请重试');
+      message.error('更新缓存失败，请重试');
+      return false;
+    }
+  };
+
+  const doCreateCache = async (cacheKey: any, cacheValue: any) => {
+    const hide = message.loading('正在新增缓存');
+    if (!cacheKey || !cacheValue) return true;
+    try {
+      await updateCache({appId, cacheName, key: cacheKey, value: cacheValue});
+      hide();
+      message.success('新增缓存成功，即将刷新');
+      return true;
+    } catch (error) {
+      hide();
+      message.error('新增缓存失败，请重试');
       return false;
     }
   };
 
   const handlerUpdate = async (record: any) => {
-    const hide = message.loading('正在查询');
+    const hide = message.loading('正在查询缓存');
     if (!record.cacheKey){
       return
     }
@@ -83,7 +98,7 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
       setUpdateFormValues(record);
     } catch (error) {
       hide();
-      message.error('查值失败，请重试');
+      message.error('查询缓存失败，请重试');
     }
   };
 
@@ -207,7 +222,7 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
 
       <CreateForm
         onSubmit={async (value) => {
-          const success = await doUpdateCache(value.cacheKey, value.cacheValue);
+          const success = await doCreateCache(value.cacheKey, value.cacheValue);
           if (success) {
             handleCreateModalVisible(false);
             if (actionRef.current) {
