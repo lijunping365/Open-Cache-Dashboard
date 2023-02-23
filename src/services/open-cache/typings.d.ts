@@ -20,7 +20,13 @@ declare namespace API {
   type OpenCacheOperationLog = {
     id: number;
     appId: number;
+    instanceId: string;
+    cacheName: string;
+    cacheKey: string;
+    cacheValue: string;
+    command: string;
     status: number;
+    cause: string;
     createTime: Date;
   };
 

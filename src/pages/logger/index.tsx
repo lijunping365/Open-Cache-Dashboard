@@ -1,12 +1,12 @@
-import {Button, message, Divider} from 'antd';
+import {Button, message, Divider, Drawer} from 'antd';
 import React, {useState, useRef} from 'react';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { fetchCacheOperationLogPage, removeCacheOperationLog} from '@/services/open-cache/logger';
 import {confirmModal} from "@/components/ConfirmModel";
-import {Link} from "@umijs/preset-dumi/lib/theme";
-
+import type {ProDescriptionsItemProps} from "@ant-design/pro-descriptions";
+import ProDescriptions from '@ant-design/pro-descriptions';
 
 
 /**
@@ -32,6 +32,8 @@ const handleRemove = async (selectedRows: any[]) => {
 const TableList: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [selectedRowsState, setSelectedRows] = useState<API.OpenCacheOperationLog[]>([]);
+  const [showDetail, setShowDetail] = useState<boolean>(false);
+  const [currentRow, setCurrentRow] = useState<API.OpenCacheOperationLog>();
 
   const columns: ProColumns<API.OpenCacheOperationLog>[] = [
     {
@@ -41,13 +43,39 @@ const TableList: React.FC = () => {
       search: false
     },
     {
-      title: '任务编号',
-      dataIndex: 'jobId',
+      title: '应用编号',
+      dataIndex: 'appId',
       valueType: 'text',
-      search: false
     },
     {
-      title: '调度结果',
+      title: '实例ID',
+      dataIndex: 'instanceId',
+      valueType: 'text',
+    },
+    {
+      title: '缓存名称',
+      dataIndex: 'cacheName',
+      valueType: 'text',
+    },
+    {
+      title: '命令类型',
+      dataIndex: 'command',
+      valueType: 'text',
+    },
+    {
+      title: '缓存Key',
+      dataIndex: 'cacheKey',
+      valueType: 'text',
+    },
+    {
+      title: '缓存Value',
+      dataIndex: 'cacheValue',
+      valueType: 'text',
+      hideInTable: true,
+      hideInSearch: true
+    },
+    {
+      title: '执行结果',
       dataIndex: 'status',
       valueEnum: {
         0: { text: '执行失败', status: 'Error' },
@@ -55,7 +83,13 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: '调度时间',
+      title: '异常信息',
+      dataIndex: 'cause',
+      valueType: 'text',
+      hideInTable: true
+    },
+    {
+      title: '执行时间',
       dataIndex: 'createTime',
       valueType: 'dateTime',
       hideInSearch: true
@@ -64,13 +98,15 @@ const TableList: React.FC = () => {
       title: '开始时间',
       dataIndex: 'beginTime',
       valueType: 'dateTime',
-      hideInTable: true
+      hideInTable: true,
+      hideInDescriptions: true
     },
     {
       title: '结束时间',
       dataIndex: 'endTime',
       valueType: 'dateTime',
-      hideInTable: true
+      hideInTable: true,
+      hideInDescriptions: true
     },
     {
       title: '操作',
@@ -78,16 +114,14 @@ const TableList: React.FC = () => {
       valueType: 'option',
       render: (_, record) => (
         <>
-          <Link
-            to={{
-              pathname: '/util/ip',
-              search: `?id=${record.id}`,
-              hash: '#the-hash',
-              state: { fromDashboard: true },
+          <a
+            onClick={()=>{
+              setShowDetail(true);
+              setCurrentRow(record);
             }}
           >
             查看详情
-          </Link>
+          </a>
           <Divider type="vertical" />
           <a
             onClick={async () => {
@@ -151,6 +185,30 @@ const TableList: React.FC = () => {
           </Button>
         </FooterToolbar>
       )}
+
+      <Drawer
+        width={400}
+        visible={showDetail}
+        onClose={() => {
+          setCurrentRow(undefined);
+          setShowDetail(false);
+        }}
+        closable={false}
+      >
+        {currentRow?.id && (
+          <ProDescriptions<API.OpenCacheOperationLog>
+            column={1}
+            title={currentRow?.id}
+            request={async () => ({
+              data: currentRow || {},
+            })}
+            params={{
+              id: currentRow?.id,
+            }}
+            columns={columns as ProDescriptionsItemProps<API.OpenCacheOperationLog>[]}
+          />
+        )}
+      </Drawer>
     </PageContainer>
   );
 };
