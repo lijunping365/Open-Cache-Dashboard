@@ -8,6 +8,8 @@ export default {
   'menu.cacheNames': '缓存名称',
   'menu.cacheKeys': '缓存管理',
   'menu.cacheMetrics': '缓存指标',
+  'menu.cacheNodes': '缓存节点',
+  'menu.cacheMonitor': '缓存监控',
   'menu.logger': '日志管理',
   'menu.user': '用户管理',
   'menu.register': '注册',

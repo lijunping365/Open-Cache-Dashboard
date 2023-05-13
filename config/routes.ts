@@ -40,6 +40,20 @@
     hideInMenu: true,
   },
   {
+    name: 'cacheNodes',
+    icon: 'smile',
+    path: 'cacheNodes',
+    component: './cacheNodes',
+    hideInMenu: true,
+  },
+  {
+    name: 'cacheMonitor',
+    icon: 'smile',
+    path: 'cacheMonitor',
+    component: './cacheMonitor',
+    hideInMenu: true,
+  },
+  {
     name: 'logger',
     icon: 'smile',
     path: 'logger',

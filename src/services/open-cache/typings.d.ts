@@ -11,8 +11,12 @@ declare namespace API {
   };
 
   type Instance = {
-    clientId: string;
+    serverId: string;
     onlineTime: Date;
+    liveTime: string;
+    cpuInfo: string;
+    memoryInfo: string;
+    diskInfo: string;
     status: string;
     weight: number;
   };
@@ -62,6 +66,19 @@ declare namespace API {
     };
     address?: string;
     phone?: string;
+  };
+
+  type CacheStatistic = {
+    taskTotalNum: number;
+    taskRunningNum: number;
+    executorTotalNum: number;
+    executorOnlineNum: number;
+  };
+
+  type CacheChart = {
+    date: Date;
+    name: string;
+    value: number;
   };
 
   type LoginResult = {

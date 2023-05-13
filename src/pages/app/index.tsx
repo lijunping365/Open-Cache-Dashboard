@@ -153,6 +153,27 @@ const TableList: React.FC = () => {
           >
             查看缓存
           </Link>
+          <Divider type="vertical" />
+          <Link
+            to={{
+              pathname: '/cacheNodes',
+              search: `?appId=${record.id}`,
+              hash: '#the-hash',
+              state: { fromDashboard: true },
+            }}
+          >
+            查看节点
+          </Link>
+          <Link
+            to={{
+              pathname: '/cacheMonitor',
+              search: `?appId=${record.id}`,
+              hash: '#the-hash',
+              state: { fromDashboard: true },
+            }}
+          >
+            缓存监控
+          </Link>
         </>
       ),
     },
