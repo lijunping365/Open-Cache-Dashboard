@@ -164,15 +164,16 @@ const TableList: React.FC = () => {
           >
             查看节点
           </Link>
+          <Divider type="vertical" />
           <Link
             to={{
-              pathname: '/cacheMonitor',
-              search: `?appId=${record.id}`,
+              pathname: '/app/monitor',
+              search: `?id=${record.id}`,
               hash: '#the-hash',
               state: { fromDashboard: true },
             }}
           >
-            缓存监控
+            应用监控
           </Link>
         </>
       ),

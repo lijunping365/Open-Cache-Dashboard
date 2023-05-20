@@ -69,16 +69,20 @@ declare namespace API {
   };
 
   type CacheStatistic = {
-    taskTotalNum: number;
-    taskRunningNum: number;
-    executorTotalNum: number;
-    executorOnlineNum: number;
+    cacheNameCount: number;
+    nodeCount: number;
   };
 
   type CacheChart = {
     date: Date;
     name: string;
     value: number;
+  };
+
+  type TokChart = {
+    key: string;
+    requestCount: number;
+    hitCount: number;
   };
 
   type LoginResult = {
@@ -167,4 +171,27 @@ declare namespace API {
     description?: string;
     type?: NoticeIconItemType;
   };
+
+  type ChartParam = {
+    appId: number;
+    cacheName?: string;
+    instanceId?: string;
+    count?: number;
+  };
+
+  type CacheNameTokParam = {
+    appId: number;
+    instanceId?: string;
+    count?: number;
+    top?: number;
+  };
+
+  type InstanceTokParam = {
+    appId: number;
+    cacheName?: string;
+    count?: number;
+    top?: number;
+  };
+
+  type TimeType = 'today' | 'week' | 'month' | 'year';
 }

@@ -13,10 +13,23 @@
     component: './Welcome',
   },
   {
+    path: '/dashboard',
+    name: 'dashboard',
+    icon: 'smile',
+    component: './dashboard',
+  },
+  {
     name: 'app',
     icon: 'table',
     path: '/app',
     component: './app',
+  },
+  {
+    name: 'appMonitor',
+    icon: 'table',
+    path: '/app/monitor',
+    component: './app/monitor',
+    hideInMenu: true,
   },
   {
     name: 'cacheKeys',
@@ -30,6 +43,13 @@
     icon: 'smile',
     path: 'cacheNames',
     component: './cacheNames',
+    hideInMenu: true,
+  },
+  {
+    name: 'cacheNamesMonitor',
+    icon: 'table',
+    path: '/cacheNames/monitor',
+    component: './cacheNames/monitor',
     hideInMenu: true,
   },
   {
@@ -47,10 +67,10 @@
     hideInMenu: true,
   },
   {
-    name: 'cacheMonitor',
+    name: 'cacheNodesMonitor',
     icon: 'smile',
-    path: 'cacheMonitor',
-    component: './cacheMonitor',
+    path: '/cacheNodes/monitor',
+    component: './cacheNodes/monitor',
     hideInMenu: true,
   },
   {

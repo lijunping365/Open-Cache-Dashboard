@@ -43,3 +43,25 @@ export const generateUUID = () => {
 export const ignorePath = () => {
   return history.location.pathname !== '/login';
 };
+
+export const handlerTokData = (res: any) => {
+  const d1 = res.map((item: any) => {
+    return { key: item.key, value: item.totalCount, name: '执行总次数' };
+  });
+  const d2 = res.map((item: any) => {
+    return { key: item.key, value: item.successCount, name: '执行成功次数' };
+  });
+
+  return d1.concat(d2);
+};
+
+export const handlerChartData = (res: any) => {
+  const d1 = res.map((item: any) => {
+    return { date: item.date, value: item.totalCount, name: '执行总次数' };
+  });
+  const d2 = res.map((item: any) => {
+    return { date: item.date, value: item.successCount, name: '执行成功次数' };
+  });
+
+  return d1.concat(d2);
+};

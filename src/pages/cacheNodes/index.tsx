@@ -64,13 +64,13 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
         <>
           <Link
             to={{
-              pathname: '/cacheMonitor',
+              pathname: '/cacheNodes/monitor',
               search: `?appId=${appId}&serverId=${record.serverId}`,
               hash: '#the-hash',
               state: { fromDashboard: true },
             }}
           >
-            查看详情
+            节点监控
           </Link>
         </>
       ),
