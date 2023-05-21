@@ -1,7 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Card, Col, message, Row, Statistic } from 'antd';
-import { fetchCacheStatistic, fetchInstanceTok, fetchCacheNameTok } from '@/services/open-cache/monitor';
+import {
+  fetchInstanceTok,
+  fetchCacheNameTok,
+  fetchAppAnalysisStatistic
+} from '@/services/open-cache/monitor';
 import type { RouteChildrenProps } from 'react-router';
 import { BarChartOutlined, DashboardOutlined } from '@ant-design/icons';
 import { ChartCard } from '@/components/ChartCard';
@@ -45,7 +49,7 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
 
   useEffect(() => {
     const getAnalysisNumber = () => {
-      fetchCacheStatistic(appId)
+      fetchAppAnalysisStatistic(appId)
         .then((res) => {
           if (res) setStatisticNumber(res);
         })

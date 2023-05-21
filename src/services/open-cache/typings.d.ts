@@ -69,8 +69,16 @@ declare namespace API {
   };
 
   type CacheStatistic = {
+    appNum: number;
     cacheNameCount: number;
     nodeCount: number;
+    cacheName: string;
+    requestCount: number;
+    hitCount: number;
+    liveTime: string;
+    cpuInfo: string;
+    memoryInfo: string;
+    diskInfo: string;
   };
 
   type CacheChart = {

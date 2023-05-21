@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Card, Col, Row, Statistic } from 'antd';
-import { fetchCacheStatistic, fetchInstanceTok } from '@/services/open-cache/monitor';
+import { fetchCacheNameAnalysisNumber, fetchInstanceTok } from '@/services/open-cache/monitor';
 import type { RouteChildrenProps } from 'react-router';
 import { BarChartOutlined, DashboardOutlined } from '@ant-design/icons';
 import { ChartCard } from '@/components/ChartCard';
@@ -31,7 +31,7 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
 
   useEffect(() => {
     const getAnalysisNumber = () => {
-      fetchCacheStatistic(appId)
+      fetchCacheNameAnalysisNumber(appId, cacheName)
         .then((res) => {
           if (res) setStatisticNumber(res);
         })
@@ -39,7 +39,7 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
         .finally(() => setLoading(false));
     };
     getAnalysisNumber();
-  }, [appId]);
+  }, [appId, cacheName]);
 
   return (
     <PageContainer loading={loading}>
@@ -47,8 +47,8 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
         <Col span={6}>
           <Card>
             <Statistic
-              title="CacheName 数量"
-              value={statisticNumber?.cacheNameCount}
+              title="CacheName 名称"
+              value={statisticNumber?.cacheName}
               prefix={<DashboardOutlined />}
             />
           </Card>
@@ -56,9 +56,10 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
         <Col span={6}>
           <Card>
             <Statistic
-              title="集群节点数量"
-              value={statisticNumber?.nodeCount}
+              title="今日总命中数及总请求数"
+              value={statisticNumber?.hitCount || 0}
               prefix={<BarChartOutlined />}
+              suffix={`/ ${statisticNumber?.requestCount || 0}`}
             />
           </Card>
         </Col>

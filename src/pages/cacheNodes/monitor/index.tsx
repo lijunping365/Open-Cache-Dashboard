@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Card, Col, Row, Statistic } from 'antd';
-import { fetchCacheStatistic, fetchCacheNameTok } from '@/services/open-cache/monitor';
+import { fetchInstanceAnalysisNumber, fetchCacheNameTok } from '@/services/open-cache/monitor';
 import type { RouteChildrenProps } from 'react-router';
 import { BarChartOutlined, DashboardOutlined } from '@ant-design/icons';
 import { ChartCard } from '@/components/ChartCard';
@@ -31,7 +31,7 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
 
   useEffect(() => {
     const getAnalysisNumber = () => {
-      fetchCacheStatistic(appId)
+      fetchInstanceAnalysisNumber(appId, instanceId)
         .then((res) => {
           if (res) setStatisticNumber(res);
         })
@@ -39,7 +39,7 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
         .finally(() => setLoading(false));
     };
     getAnalysisNumber();
-  }, [appId]);
+  }, [appId, instanceId]);
 
   return (
     <PageContainer loading={loading}>
@@ -47,18 +47,38 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
         <Col span={6}>
           <Card>
             <Statistic
-              title="CacheName 数量"
-              value={statisticNumber?.cacheNameCount}
+              title="CPU信息"
+              value={statisticNumber?.cpuInfo  || '-'}
               prefix={<DashboardOutlined />}
+              valueStyle={{fontSize: '20px'}}
             />
           </Card>
         </Col>
         <Col span={6}>
           <Card>
             <Statistic
-              title="集群节点数量"
-              value={statisticNumber?.nodeCount}
+              title="内存信息"
+              value={statisticNumber?.memoryInfo || '-'}
               prefix={<BarChartOutlined />}
+              valueStyle={{fontSize: '20px'}}
+            />
+          </Card>
+        </Col>
+        <Col span={6}>
+          <Card>
+            <Statistic
+              title="磁盘信息"
+              value={statisticNumber?.diskInfo || '-'}
+              valueStyle={{fontSize: '20px'}}
+            />
+          </Card>
+        </Col>
+        <Col span={6}>
+          <Card>
+            <Statistic
+              title="运行时长"
+              value={statisticNumber?.liveTime || '-'}
+              valueStyle={{fontSize: '20px'}}
             />
           </Card>
         </Col>
