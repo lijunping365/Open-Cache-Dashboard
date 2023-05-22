@@ -1,28 +1,61 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Card, Col, Row, Statistic } from 'antd';
+import {Card, Col, Row, Select, Statistic} from 'antd';
 import { Chart, LineAdvance } from 'bizcharts';
-import { fetchAnalysisStatistic } from '@/services/open-cache/monitor';
+import {fetchAnalysisChart, fetchAnalysisStatistic} from '@/services/open-cache/monitor';
 import type { RouteChildrenProps } from 'react-router';
 import { BarChartOutlined, DashboardOutlined } from '@ant-design/icons';
+import {fetchOpenCacheAppList} from "@/services/open-cache/app";
+import {handlerChartData} from "@/utils/utils";
 
 const TableList: React.FC<RouteChildrenProps> = () => {
+  const [appId, setAppId] = useState<number>();
+  const [appSet, setAppSet] = useState<API.OpenCacheApp[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [statisticNumber, setStatisticNumber] = useState<API.CacheStatistic>();
   const [chartData, setChartData] = useState<API.CacheChart[]>([]);
 
-  const onFetchStatisticData = useCallback(async () => {
-    fetchAnalysisStatistic()
-      .then((res) => {
-        if (res) setStatisticNumber(res);
-      })
-      .catch()
-      .finally(() => setLoading(false));
+  useEffect(() => {
+    const getAnalysisNumber = () => {
+      fetchAnalysisStatistic()
+        .then((res) => {
+          if (res) setStatisticNumber(res);
+        })
+        .catch()
+        .finally(() => setLoading(false));
+    }
+    getAnalysisNumber();
   }, []);
 
   useEffect(() => {
-    onFetchStatisticData().then();
+    const getAppSet = () => {
+      fetchOpenCacheAppList()
+        .then((res: any) => {
+          if (res) {
+            setAppSet(res);
+            setAppId(res[0].id)
+          }
+        })
+        .catch();
+    }
+    getAppSet();
   }, []);
+
+  useEffect(() => {
+    const getAnalysisChart = () => {
+      if (!appId){
+        return;
+      }
+      fetchAnalysisChart({ appId })
+        .then((res: any) => {
+          if (res) {
+            setChartData(handlerChartData(res));
+          }
+        })
+        .catch();
+    };
+    getAnalysisChart();
+  }, [appId]);
 
   return (
     <PageContainer loading={loading}>
@@ -56,12 +89,23 @@ const TableList: React.FC<RouteChildrenProps> = () => {
         </Col>
       </Row>
 
-      <Card style={{ marginTop: '20px' }}>
-        <Card>
-          <Chart padding={[10, 20, 50, 40]} autoFit height={400} data={chartData}>
-            <LineAdvance shape="smooth" point area position="date*value" color="name" />
-          </Chart>
-        </Card>
+      <Card
+        style={{ marginTop: '20px' }}
+        extra={
+          <div>
+            <Select
+              defaultValue={appId}
+              onChange={(id: any)=> setAppId(id)}
+              options={(appSet || []).map((d) => ({
+                value: d.id,
+                label: d.appName,
+              }))}
+            />
+          </div>
+        }>
+        <Chart padding={[10, 20, 50, 40]} autoFit height={400} data={chartData}>
+          <LineAdvance shape="smooth" point area position="date*value" color="name" />
+        </Chart>
       </Card>
     </PageContainer>
   );

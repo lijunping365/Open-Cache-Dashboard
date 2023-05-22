@@ -35,7 +35,7 @@ export async function fetchInstanceAnalysisNumber(appId: number, serverId: strin
   });
 }
 
-export async function fetchCacheChart(params: API.ChartParam) {
+export async function fetchAnalysisChart(params: API.ChartParam) {
   return request('/analysis/chart', {
     method: 'GET',
     params: {

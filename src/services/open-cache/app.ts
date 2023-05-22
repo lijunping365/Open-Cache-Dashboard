@@ -37,3 +37,10 @@ export async function removeOpenCacheApp(params: {ids: number[]}) {
     data: {...params}
   });
 }
+
+export async function fetchOpenCacheAppList(appName?: string) {
+  return request('/app/list', {
+    method: 'GET',
+    params: { appName },
+  });
+}

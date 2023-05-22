@@ -1,7 +1,7 @@
 import { Chart, LineAdvance } from 'bizcharts';
 import { Card, message } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { fetchCacheChart } from '@/services/open-cache/monitor';
+import { fetchAnalysisChart } from '@/services/open-cache/monitor';
 import { handlerChartData } from '@/utils/utils';
 
 interface ChartCardProps {
@@ -18,7 +18,7 @@ export const ChartCard = ({ appId, cacheName, instanceId, count }: ChartCardProp
   useEffect(() => {
     const getAnalysisChart = () => {
       setLoading(true);
-      fetchCacheChart({ appId, cacheName, instanceId, count })
+      fetchAnalysisChart({ appId, cacheName, instanceId, count })
         .then((res: any) => {
           if (res) {
             setChartData(handlerChartData(res));
