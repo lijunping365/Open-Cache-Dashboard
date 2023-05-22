@@ -46,10 +46,10 @@ export const ignorePath = () => {
 
 export const handlerTokData = (res: any) => {
   const d1 = res.map((item: any) => {
-    return { key: item.key, value: item.requestCount, name: '总请求总数' };
+    return { key: item.key, value: Number(item.requestCount), name: '总请求总数' };
   });
   const d2 = res.map((item: any) => {
-    return { key: item.key, value: item.hitCount, name: '总命中总数' };
+    return { key: item.key, value: Number(item.hitCount), name: '总命中总数' };
   });
 
   return d1.concat(d2);
@@ -57,10 +57,10 @@ export const handlerTokData = (res: any) => {
 
 export const handlerChartData = (res: any) => {
   const d1 = res.map((item: any) => {
-    return { date: item.date, value: item.requestCount, name: '总请求总数' };
+    return { date: item.date, value: Number(item.requestCount), name: '总请求总数' };
   });
   const d2 = res.map((item: any) => {
-    return { date: item.date, value: item.hitCount, name: '总命中总数' };
+    return { date: item.date, value: Number(item.hitCount), name: '总命中总数' };
   });
 
   return d1.concat(d2);

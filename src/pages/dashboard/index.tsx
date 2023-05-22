@@ -72,7 +72,7 @@ const TableList: React.FC<RouteChildrenProps> = () => {
         <Col span={6}>
           <Card>
             <Statistic
-              title="应用数量"
+              title="CacheName 总数"
               value={statisticNumber?.cacheNameCount}
               prefix={<DashboardOutlined />}
             />
@@ -81,7 +81,7 @@ const TableList: React.FC<RouteChildrenProps> = () => {
         <Col span={6}>
           <Card>
             <Statistic
-              title="CacheName 总数"
+              title="健康节点总数"
               value={statisticNumber?.nodeCount}
               prefix={<BarChartOutlined />}
             />
