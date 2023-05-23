@@ -1,35 +1,14 @@
 import { Chart, LineAdvance } from 'bizcharts';
-import { Card, message } from 'antd';
-import React, { useEffect, useState } from 'react';
-import { fetchAnalysisChart } from '@/services/open-cache/monitor';
-import { handlerChartData } from '@/utils/utils';
+import { Card } from 'antd';
+import React from 'react';
+
 
 interface ChartCardProps {
-  appId: number;
-  cacheName?: string;
-  instanceId?: string;
-  count?: number;
+  loading: boolean;
+  chartData: API.CacheChart[];
 }
 
-export const ChartCard = ({ appId, cacheName, instanceId, count }: ChartCardProps) => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [chartData, setChartData] = useState<API.CacheChart[]>([]);
-
-  useEffect(() => {
-    const getAnalysisChart = () => {
-      setLoading(true);
-      fetchAnalysisChart({ appId, cacheName, instanceId, count })
-        .then((res: any) => {
-          if (res) {
-            setChartData(handlerChartData(res));
-          }
-        })
-        .catch((reason) => message.error(reason))
-        .finally(() => setLoading(false));
-    };
-    getAnalysisChart();
-  }, []);
-
+export const ChartCard = ({ loading, chartData }: ChartCardProps) => {
   return (
     <Card
       loading={loading}
