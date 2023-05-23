@@ -6,7 +6,7 @@ import type { RouteChildrenProps } from 'react-router';
 import { BarChartOutlined, DashboardOutlined } from '@ant-design/icons';
 import { ChartCard } from '@/components/ChartCard';
 import { TopCard } from '@/components/TopCard';
-import {handlerChartData, handlerTokData} from '@/utils/utils';
+import {getTopCount, handlerChartData, handlerTokData} from '@/utils/utils';
 
 const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
   const { query }: any = location;
@@ -21,7 +21,8 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
 
   const onFetchCacheNameTokData = useCallback(async () => {
     setTokLoading(true);
-    fetchCacheNameTok({ appId, instanceId })
+    const count = getTopCount(selectDate);
+    fetchCacheNameTok({ appId, instanceId, count })
       .then((res) => {
         if (res) setCacheNameTok(handlerTokData(res));
       })

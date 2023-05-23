@@ -65,3 +65,16 @@ export const handlerChartData = (res: any) => {
 
   return d1.concat(d2);
 };
+
+export const getTopCount = (timeType: API.TimeType) => {
+  switch (timeType){
+    case "today":
+      return 1;
+    case "week":
+      return 7;
+    case "month":
+      return 30
+    default:
+      return 30;
+  }
+};

@@ -10,7 +10,7 @@ import type { RouteChildrenProps } from 'react-router';
 import { BarChartOutlined, DashboardOutlined } from '@ant-design/icons';
 import { ChartCard } from '@/components/ChartCard';
 import { TopCard } from '@/components/TopCard';
-import {handlerChartData, handlerTokData} from '@/utils/utils';
+import {getTopCount, handlerChartData, handlerTokData} from '@/utils/utils';
 
 const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
   const { query }: any = location;
@@ -27,7 +27,7 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
 
   const onFetchCacheNameTokData = useCallback(async () => {
     setTokLoading1(true);
-    fetchCacheNameTok({ appId, count: selectDate1 ==='week' ? 1: 30 })
+    fetchCacheNameTok({ appId, count: getTopCount(selectDate1)})
       .then((res) => {
         if (res) setCacheNameTok(handlerTokData(res));
       })
@@ -41,7 +41,7 @@ const TableList: React.FC<RouteChildrenProps> = ({ location }) => {
 
   const onFetchInstanceTokData = useCallback(async () => {
     setTokLoading2(true);
-    fetchInstanceTok({ appId })
+    fetchInstanceTok({ appId, count: getTopCount(selectDate2) })
       .then((res) => {
         if (res) setInstanceTok(handlerTokData(res));
       })
