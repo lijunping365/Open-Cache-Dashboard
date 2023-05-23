@@ -11,8 +11,12 @@ declare namespace API {
   };
 
   type Instance = {
-    clientId: string;
+    serverId: string;
     onlineTime: Date;
+    liveTime: string;
+    cpuInfo: string;
+    memoryInfo: string;
+    diskInfo: string;
     status: string;
     weight: number;
   };
@@ -62,6 +66,31 @@ declare namespace API {
     };
     address?: string;
     phone?: string;
+  };
+
+  type CacheStatistic = {
+    appNum: number;
+    cacheNameCount: number;
+    nodeCount: number;
+    cacheName: string;
+    requestCount: number;
+    hitCount: number;
+    liveTime: string;
+    cpuInfo: string;
+    memoryInfo: string;
+    diskInfo: string;
+  };
+
+  type CacheChart = {
+    date: Date;
+    name: string;
+    value: number;
+  };
+
+  type TokChart = {
+    key: string;
+    requestCount: number;
+    hitCount: number;
   };
 
   type LoginResult = {
@@ -150,4 +179,27 @@ declare namespace API {
     description?: string;
     type?: NoticeIconItemType;
   };
+
+  type ChartParam = {
+    appId: number;
+    cacheName?: string;
+    instanceId?: string;
+    count?: number;
+  };
+
+  type CacheNameTokParam = {
+    appId: number;
+    instanceId?: string;
+    count?: number;
+    top?: number;
+  };
+
+  type InstanceTokParam = {
+    appId: number;
+    cacheName?: string;
+    count?: number;
+    top?: number;
+  };
+
+  type TimeType = 'today' | 'week' | 'month' | 'year';
 }

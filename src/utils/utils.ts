@@ -43,3 +43,38 @@ export const generateUUID = () => {
 export const ignorePath = () => {
   return history.location.pathname !== '/login';
 };
+
+export const handlerTokData = (res: any) => {
+  const d1 = res.map((item: any) => {
+    return { key: item.key, value: Number(item.requestCount), name: '总请求总数' };
+  });
+  const d2 = res.map((item: any) => {
+    return { key: item.key, value: Number(item.hitCount), name: '总命中总数' };
+  });
+
+  return d1.concat(d2);
+};
+
+export const handlerChartData = (res: any) => {
+  const d1 = res.map((item: any) => {
+    return { date: item.date, value: Number(item.requestCount), name: '总请求总数' };
+  });
+  const d2 = res.map((item: any) => {
+    return { date: item.date, value: Number(item.hitCount), name: '总命中总数' };
+  });
+
+  return d1.concat(d2);
+};
+
+export const getTopCount = (timeType: API.TimeType) => {
+  switch (timeType){
+    case "today":
+      return 1;
+    case "week":
+      return 7;
+    case "month":
+      return 30
+    default:
+      return 30;
+  }
+};
